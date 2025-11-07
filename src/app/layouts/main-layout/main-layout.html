@@ -1,14 +1,31 @@
-<div class="dashboard-container">
-  
-    <app-sidebar></app-sidebar>
-  
-    <div class="main-wrapper">
-      
-      <app-header></app-header>
-  
-      <main class="main-content">
-        <router-outlet></router-outlet>
-      </main>
-      
-    </div>
+<header class="main-header">
+  <div class="header-logo">
+    <img src="img/Logo2.png" alt="Sprintix Logo" />
   </div>
+  <div class="user-profile">
+    <div class="user-icon"></div>
+  </div>
+</header>
+
+<div class="app-body">
+  
+  <nav class="sidebar">
+    
+    <a routerLink="/home" routerLinkActive="active" 
+       class="nav-link nav-link-home">
+      <span class="nav-icon">🏠</span>
+    </a>
+    
+    <a routerLink="/recomendados" routerLinkActive="active" class="nav-link">
+      Recomendados
+    </a>
+    <a routerLink="/proyectos" routerLinkActive="active" class="nav-link">
+      Proyectos
+    </a>
+  </nav>
+
+  <main class="content-area">
+    <router-outlet></router-outlet>
+  </main>
+  
+</div>

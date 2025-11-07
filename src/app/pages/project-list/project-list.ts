@@ -1,16 +1,17 @@
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router'; // <--- 1. IMPORTA RouterLink
+import { CommonModule } from '@angular/common'; // <--- 2. IMPORTA CommonModule (para *ngIf, *ngFor)
 
 @Component({
   selector: 'app-project-list',
-  standalone: true,
-  imports: [], // Por ahora vacío
-  templateUrl: './project-list.component.html',
-  styleUrls: ['./project-list.component.css']
+  standalone: true, // <--- 3. ASEGÚRATE de que es 'standalone'
+  imports: [
+    RouterLink,    // <--- 4. AÑADE RouterLink aquí
+    CommonModule   // <--- 5. AÑADE CommonModule aquí
+  ],
+  templateUrl: './project-list.html',
+  styleUrls: ['./project-list.css']
 })
 export class ProjectListComponent {
-
-  // En el futuro, aquí pondrías la lógica:
-  // - Un array de proyectos recomendados
-  // - Un array de tareas recientes
-  
+  // Aquí va la lógica de tu componente
 }

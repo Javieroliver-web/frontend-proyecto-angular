@@ -1,36 +1,41 @@
 import { Routes } from '@angular/router';
 
-// 1. Importa el componente de Layout (el "caparazón")
-import { MainLayout } from './layouts/main-layout/main-layout';
+// Importa tus componentes (asegúrate de que las rutas son correctas)
+import { MainLayoutComponent } from './layouts/main-layout/main-layout.js';
+import { LoginComponent } from './pages/login/login.js';
+import { ProjectListComponent } from './pages/project-list/project-list.js';
+import { BoardComponent } from './pages/board/board.js';
 
-// 2. Importa tus 4 componentes de página
-import { DashboardComponent } from './pages/dashboard/dashboard';
-import { BoardComponent } from './pages/board/board';
-import { ProjectListComponent } from './pages/project-list/project-list';
-import { CalendarComponent } from './pages/calendar/calendar';
-
-// (Opcional: Si creas la página de Login, la importarías aquí)
-// import { LoginComponent } from './pages/login/login.component';
-
+// Esto es lo único que debe haber en este archivo
 export const routes: Routes = [
+  // Ruta de Login (sin layout)
+  {
+    path: 'login',
+    component: LoginComponent
+  },
   
-  // --- Rutas que SÍ usan la Sidebar y el Header ---
+  // Rutas principales (CON el layout)
   {
     path: '',
-    component: MainLayout, // Carga el layout
+    component: MainLayoutComponent,
     children: [
-      // Si el path está vacío ('/'), redirige a '/dashboard'
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      
-      // Define las 4 vistas que se cargarán DENTRO del layout
-      { path: 'dashboard', component: DashboardComponent },     // Vista 1
-      { path: 'board', component: BoardComponent },         // Vista 2
-      { path: 'list', component: ProjectListComponent },     // Vista 3
-      { path: 'calendar', component: CalendarComponent }     // Vista 4
+      { 
+        path: 'recomendados', 
+        component: ProjectListComponent 
+      },
+      { 
+        path: 'proyectos/:id',
+        component: BoardComponent
+      },
+      // Redirección
+      { 
+        path: '', 
+        redirectTo: 'recomendados', 
+        pathMatch: 'full' 
+      }
     ]
   },
-
-  // --- Rutas que NO usan el Layout (como Login) irían aquí ---
-  // { path: 'login', component: LoginComponent }
   
+  // Ruta comodín
+  { path: '**', redirectTo: 'recomendados' }
 ];

@@ -68,3 +68,13 @@ ul {
 .btn-secondary:hover {
     background-color: #dddddd;
 }
+
+/* ... (resto de styles.css) ... */
+
+.btn-dark {
+    background-color: var(--color-dark-gray);
+    color: white;
+  }
+  .btn-dark:hover {
+    background-color: #333; /* Un poco más oscuro al pasar el ratón */
+  }

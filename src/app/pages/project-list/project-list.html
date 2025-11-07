@@ -1,49 +1,14 @@
-<h1 class="page-title">Recomendados</h1>
-
-<h2 class="section-title">Proyectos recientes</h2>
-<div class="project-cards-grid">
-  <div class="project-card">
-    <span class="card-icon">📦</span>
-    <h3>Proyecto 1</h3>
-  </div>
-  <div class="project-card">
-    <span class="card-icon">🚀</span>
-    <h3>Proyecto 2</h3>
-  </div>
-  <div class="project-card">
-    <span class="card-icon">📈</span>
-    <h3>Proyecto 3</h3>
-  </div>
+<div class="project-card" [routerLink]="['/proyectos', '1']">
+  <span class="card-icon">📦</span>
+  <h3>Proyecto 1</h3>
 </div>
 
-<nav class="content-tabs">
-  <a href="#" class="active">Con trabajo reciente</a>
-  <a href="#">Mis asignaciones</a>
-  <a href="#">Marcado</a>
-</nav>
+<div class="project-card" [routerLink]="['/proyectos', '2']">
+  <span class="card-icon">🚀</span>
+  <h3>Proyecto 2</h3>
+</div>
 
-<div class="task-list-wrapper">
-  <div class="task-list-header">
-    <span>En la última semana</span>
-  </div>
-  
-  <ul class="task-list">
-    <li class="task-item">
-      <div class="task-details">
-        <input type="checkbox" id="task1" checked>
-        <label for="task1">Organizar inventario</label>
-      </div>
-      <div class="task-assignees">
-        <span>Javier</span>
-        <div class="user-avatar-sm">👤</div>
-      </div>
-    </li>
-
-    <li class="task-item">
-      <div class="task-details">
-        <input type="checkbox" id="task2">
-        <label for="task2">Añadir scrum</label>
-      </div>
-      <div class="task-assignees">
-        <span>Manuel</span>
-        <div class="user-avatar-sm">👤
+<div class="project-card" [routerLink]="['/proyectos', '3']">
+  <span class="card-icon">📈</span>
+  <h3>Proyecto 3</h3>
+</div>

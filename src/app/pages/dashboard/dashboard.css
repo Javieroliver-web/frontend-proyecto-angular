@@ -1,254 +1,347 @@
-/* Encabezado de la página */
+/* --- Encabezado de la página --- */
 .project-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-  }
-  
-  .project-title {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-  
-  .project-icon {
-    font-size: 1.5rem;
-    background: #eee;
-    padding: 0.5rem;
-    border-radius: 8px;
-  }
-  
-  .project-title h2 {
-    font-size: 1.75rem;
-    font-weight: 600;
-  }
-  
-  /* Tarjetas de Estadísticas */
-  .stats-cards {
-    display: grid;
-    /* Crea 3 columnas de igual tamaño */
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    margin-bottom: 2rem;
-  }
-  
-  .stat-card {
-    /* Usamos el color --primary-color definido en styles.css */
-    background: var(--primary-color);
-    color: white;
-    padding: 1.5rem;
-    border-radius: 8px;
-    font-size: 1.1rem;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-  }
-  
-  .stat-card span {
-    font-weight: 700;
-    margin-left: 0.5rem;
-  }
-  
-  /* Cuadrícula de Widgets */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.project-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.project-icon {
+  font-size: 1.5rem;
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.project-title h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+  color: #1f2937;
+}
+
+.btn-secondary {
+  background: #4b5563;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.25rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-secondary:hover {
+  background: #374151;
+}
+
+/* --- Tarjetas de Estadísticas --- */
+.stats-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: #4a9ca6;
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stat-card span {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+/* --- Cuadrícula de Widgets --- */
+.widgets-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.widget {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.widget h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  color: #1f2937;
+}
+
+.widget > p {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin: 0 0 1rem 0;
+}
+
+/* --- Widget 1: Resumen del estado --- */
+.donut-chart-container {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.donut-chart-placeholder {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: conic-gradient(
+    #5b8f97 0deg 180deg,
+    #a8d5dc 180deg 252deg,
+    #d1eaee 252deg 360deg
+  );
+  position: relative;
+  flex-shrink: 0;
+}
+
+.donut-chart-placeholder::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  background: white;
+  border-radius: 50%;
+}
+
+.chart-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.legend-item input[type="checkbox"] {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.legend-item:nth-child(1) input[type="checkbox"] {
+  background-color: #5b8f97;
+}
+
+.legend-item:nth-child(2) input[type="checkbox"] {
+  background-color: #a8d5dc;
+}
+
+.legend-item:nth-child(3) input[type="checkbox"] {
+  background-color: #d1eaee;
+}
+
+.legend-item input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+}
+
+.legend-item label {
+  cursor: pointer;
+  color: #374151;
+}
+
+/* --- Widget 2: Actividad reciente --- */
+.activity-feed {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.feed-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.user-icon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.feed-text {
+  flex: 1;
+  font-size: 0.9rem;
+  color: #4b5563;
+  line-height: 1.5;
+}
+
+.feed-text strong {
+  color: #1f2937;
+  font-weight: 600;
+}
+
+/* --- Widget 3: Gráfico de Barras --- */
+.bar-chart-placeholder {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  height: 180px;
+  gap: 2rem;
+  margin-top: 1.5rem;
+  padding: 0 1rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.bar-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.bar {
+  width: 100%;
+  max-width: 80px;
+  background: linear-gradient(to top, #4a9ca6 0%, #67b5bf 100%);
+  border-radius: 6px 6px 0 0;
+  transition: all 0.3s;
+}
+
+.bar-wrapper span {
+  font-size: 0.85rem;
+  color: #6b7280;
+  font-weight: 500;
+  padding-bottom: 0.5rem;
+}
+
+/* --- Widget 4: Carga de trabajo del equipo --- */
+.workload-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: #6b7280;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  padding: 0 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.workload-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.workload-list li {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-name {
+  width: 120px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #374151;
+  flex-shrink: 0;
+}
+
+.user-name::before {
+  content: '👤';
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+.progress-bar {
+  flex: 1;
+  display: flex;
+}
+
+.progress-bar div {
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
+  color: #374151;
+  min-width: 80px;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
   .widgets-grid {
-    display: grid;
-    /* Crea columnas automáticas:
-      - Intentará que midan 400px.
-      - Si no caben, se ajustarán (minmax).
-      - Esto lo hace responsive automáticamente.
-    */
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .stats-cards {
+    grid-template-columns: 1fr;
   }
   
-  .widget {
-    background: var(--bg-white);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 1.5rem;
-    /* Permite que los widgets crezcan si la cuadrícula es impar */
-    display: flex;
+  .project-header {
     flex-direction: column;
-  }
-  
-  .widget h3 {
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-  }
-  
-  .widget > p {
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    margin-bottom: 1.5rem;
-    /* Altura mínima para alinear los widgets */
-    min-height: 40px; 
-  }
-  
-  /* Estilos específicos de cada Widget */
-  
-  /* Widget 1: Resumen */
-  .donut-chart-container {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-    margin-top: 1rem;
-  }
-  
-  .donut-chart-placeholder {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    /* Placeholder visual de un gráfico de dona */
-    background: conic-gradient(
-        #3a86ff 0% 50%, 
-        #8338ec 50% 75%, 
-        #ff006e 75% 100%
-    );
-    position: relative;
-  }
-  /* Agujero de la dona */
-  .donut-chart-placeholder::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 70%;
-    height: 70%;
-    background: var(--bg-white);
-    border-radius: 50%;
-  }
-  
-  .chart-legend {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-  
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.9rem;
-  }
-  
-  /* Widget 2: Actividad */
-  .activity-feed {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  
-  .feed-item {
-    display: flex;
     align-items: flex-start;
     gap: 1rem;
   }
-  
-  .user-icon {
-    font-size: 1rem;
-    width: 32px;
-    height: 32px;
-    flex-shrink: 0;
-    border-radius: 50%;
-    background: #f0f0f0;
-    display: grid;
-    place-items: center;
-  }
-  
-  .feed-text {
-    font-size: 0.9rem;
-    line-height: 1.4;
-  }
-  
-  .feed-text span {
-    color: var(--text-secondary);
-    font-size: 0.85rem;
-    margin-left: 0.25rem;
-  }
-  
-  /* Widget 3: Gráfico de Barras */
-  .bar-chart-placeholder {
-    flex: 1; /* Ocupa el espacio restante */
-    height: 150px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    align-items: flex-end;
-    gap: 1.5rem;
-    border-bottom: 2px solid var(--border-color);
-    padding: 0 1rem;
-  }
-  
-  .bar-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  
-  .bar {
-    width: 70%;
-    background-color: var(--primary-color);
-    opacity: 0.6;
-    border-radius: 4px 4px 0 0;
-  }
-  
-  .bar-wrapper span {
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-  }
-  
-  /* Widget 4: Carga de trabajo */
-  .workload-header {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    padding: 0 0.5rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .workload-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-    margin-top: 1rem;
-  }
-  
-  .workload-list li {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-  
-  .user-name {
-    width: 100px; /* Ancho fijo para alinear barras */
-    font-weight: 500;
-    font-size: 0.9rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  
-  .progress-bar {
-    flex: 1;
-    height: 25px;
-    background: #f0f0f0;
-    border-radius: 4px;
-    overflow: hidden;
-    border: 1px solid var(--border-color);
-  }
-  
-  .progress-bar div {
-    height: 100%;
-    /* Usamos el color oscuro del logo */
-    background: var(--primary-color-dark, #264653); 
-    color: white;
-    font-size: 0.8rem;
-    text-align: center;
-    line-height: 25px;
-    font-weight: 500;
-    transition: width 0.3s ease;
-  }
+}

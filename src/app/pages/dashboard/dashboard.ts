@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { ChartData, ChartOptions } from 'chart.js';
-import { NgChartsModule } from 'ng2-charts'; // <-- Importación
+import { BaseChartDirective } from 'ng2-charts';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [NgChartsModule],
+  imports: [BaseChartDirective],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.css']
 })

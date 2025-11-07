@@ -1,24 +1,23 @@
 import { Component } from '@angular/core';
-
-// 1. Importa los componentes que vas a usar
-import { Header } from '../../components/header/header';
-import { Sidebar } from '../../components/sidebar/sidebar';
-import { RouterOutlet } from '@angular/router'; // <-- Importante para <router-outlet>
+// 1. Importa todo lo que necesitas
+import { CommonModule } from '@angular/common'; 
+import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-main-layout',
   standalone: true,
   
-  // 2. Añádelos al array de 'imports'
+  // 2. AÑÁDELOS AL ARRAY 'imports'
   imports: [
-    Header,
-    Sidebar,
-    RouterOutlet
+    CommonModule,
+    RouterOutlet,
+    RouterLink,
+    RouterLinkActive
   ],
   
   templateUrl: './main-layout.html',
   styleUrls: ['./main-layout.css']
 })
-export class MainLayout {
-
+export class MainLayoutComponent {
+  // ...
 }

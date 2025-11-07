@@ -1,0 +1,110 @@
+/* --- Contenedor Principal --- */
+.login-container {
+  display: grid;
+  place-items: center;
+  height: 100vh;
+  /* Fondo degradado como en tu imagen */
+  background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* --- Caja de Login --- */
+.login-box {
+  background: var(--bg-white, #fff);
+  padding: 2.5rem 3rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  z-index: 2;
+}
+
+.login-logo-main {
+  height: 40px; /* Ajusta el tamaño según necesites */
+  margin-bottom: 2rem;
+}
+
+.login-logo-footer {
+  height: 20px; /* Más pequeño */
+  margin-top: 1.5rem;
+  opacity: 0.6;
+}
+
+/* --- Formulario --- */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-secondary, #555);
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  font-size: 1rem;
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 8px;
+  box-sizing: border-box; /* Importante para que el padding no rompa el ancho */
+}
+
+.btn-login {
+  padding: 0.85rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  /* El color verde azulado de tu diseño */
+  background-color: #3d8f85; 
+  color: white;
+  transition: background-color 0.2s;
+}
+
+.btn-login:hover {
+  background-color: #31726a;
+}
+
+/* --- Iconos decorativos --- */
+.deco-chart-1,
+.deco-chart-2 {
+  position: absolute;
+  z-index: 1;
+  opacity: 0.7;
+}
+
+.deco-chart-1 {
+  /* Placeholder para tu gráfico de barras verde */
+  width: 120px;
+  height: 100px;
+  background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjgwIiB2aWV3Qm94PSIwIDAgMTAwIDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSI4MCIgcngPSI0IiBmaWxsPSIjN2JkNTdiIi8+PHJlY3QgeD0iMzAiIHk9IjIwIiB3aWR0aD0iMjAiIGhlaWdodD0iNjAiIHJ4PSI0IiBmaWxsPSIjYTRhNDU5Ii8+PHJlY3QgeD0iNjAiIHk9IjQwIiB3aWR0aD0iMjAiIGhlaWdodD0iNDAiIHJ4PSI0IiBmaWxsPSIjY2NlYWNlIi8+PC9zdmc+');
+  background-size: contain;
+  background-repeat: no-repeat;
+  bottom: 10%;
+  left: 10%;
+  transform: rotate(-10deg);
+}
+
+.deco-chart-2 {
+  /* Placeholder para tu gráfico de dona verde/azul */
+  width: 100px;
+  height: 100px;
+  background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgcj0iNDAiIHN0cm9rZT0iIzZlZDZiZCIgc3Ryb2tlLXdpZHRoPSIyMCIgc3Ryb2tlLWRhc2hhcnJheT0iMTUwIDMxNCIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjI4MCIvPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjQwIiBzdHJva2U9IiM1ZmI5OGUiIHN0cm9rZS13aWR0aD0iMjAiIHN0cm9rZS1kYXNoYXJyYXk9IjgwIDMxNCIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjIwMCIvPjwvc3ZnPg==');
+  background-size: contain;
+  background-repeat: no-repeat;
+  top: 15%;
+  right: 12%;
+  transform: rotate(20deg);
+}
