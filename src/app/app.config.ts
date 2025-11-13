@@ -1,15 +1,15 @@
+// src/app/app.config.ts
 import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { routes } from './app.routes.js';
-
-// 1. Importa el provider de ng2-charts
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { routes } from './app.routes';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
+import { authInterceptor } from './interceptors/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-
-    // 2. Añade el provider aquí
+    provideHttpClient(withInterceptors([authInterceptor])),
     provideCharts(withDefaultRegisterables())
   ]
 };

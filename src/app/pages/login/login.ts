@@ -1,24 +1,51 @@
+// src/app/pages/login/login.ts
 import { Component } from '@angular/core';
-import { Router } from '@angular/router'; // <-- 1. Importa el Router
+import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './login.html',
   styleUrls: ['./login.css']
 })
 export class LoginComponent {
+  email = '';
+  password = '';
+  errorMessage = '';
+  isLoading = false;
 
-  // 2. Inyéctalo en el constructor
-  constructor(private router: Router) { }
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
-  // 3. Úsalo en tu función login()
-  login() {
-    console.log('Intento de inicio de sesión...');
-    
-    // (Aquí iría tu lógica de autenticación)
-    // Si la autenticación es exitosa:
-    
-    // 4. Redirige a '/recomendados'
-    this.router.navigate(['/recomendados']);
+  login(): void {
+    if (!this.email || !this.password) {
+      this.errorMessage = 'Por favor ingrese email y contraseña';
+      return;
+    }
+
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    this.authService.login(this.email, this.password).subscribe({
+      next: (response) => {
+        this.isLoading = false;
+        if (response.success) {
+          this.router.navigate(['/recomendados']);
+        } else {
+          this.errorMessage = response.message;
+        }
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.errorMessage = 'Usuario o contraseña incorrectos';
+        console.error('Error en login:', error);
+      }
+    });
   }
 }

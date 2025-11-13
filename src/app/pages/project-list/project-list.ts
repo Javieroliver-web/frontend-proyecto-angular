@@ -1,17 +1,60 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router'; // <--- 1. IMPORTA RouterLink
-import { CommonModule } from '@angular/common'; // <--- 2. IMPORTA CommonModule (para *ngIf, *ngFor)
+// src/app/pages/project-list/project-list.ts
+import { Component, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { ProyectoService, Proyecto } from '../../services/proyecto.service';
 
 @Component({
   selector: 'app-project-list',
-  standalone: true, // <--- 3. ASEGÚRATE de que es 'standalone'
-  imports: [
-    RouterLink,    // <--- 4. AÑADE RouterLink aquí
-    CommonModule   // <--- 5. AÑADE CommonModule aquí
-  ],
+  standalone: true,
+  imports: [RouterLink, CommonModule],
   templateUrl: './project-list.html',
   styleUrls: ['./project-list.css']
 })
-export class ProjectListComponent {
-  // Aquí va la lógica de tu componente
+export class ProjectListComponent implements OnInit {
+  proyectos: Proyecto[] = [];
+  isLoading = true;
+  errorMessage = '';
+
+  // Mapeo de iconos por ID o nombre de proyecto
+  iconMap: { [key: number]: string } = {
+    1: '📦',
+    2: '🚀',
+    3: '📈'
+  };
+
+  constructor(private proyectoService: ProyectoService) {}
+
+  ngOnInit(): void {
+    this.cargarProyectos();
+  }
+
+  cargarProyectos(): void {
+    this.isLoading = true;
+    this.proyectoService.getProyectos().subscribe({
+      next: (proyectos) => {
+        this.proyectos = proyectos;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error al cargar proyectos:', error);
+        this.errorMessage = 'Error al cargar los proyectos';
+        this.isLoading = false;
+      }
+    });
+  }
+
+  getIcono(proyecto: Proyecto): string {
+    return this.iconMap[proyecto.id] || '📁';
+  }
+
+  getEstadoClass(estado: string): string {
+    const estadoMap: { [key: string]: string } = {
+      'activo': 'estado-activo',
+      'completado': 'estado-completado',
+      'pausado': 'estado-pausado',
+      'planificado': 'estado-planificado'
+    };
+    return estadoMap[estado.toLowerCase()] || 'estado-default';
+  }
 }
