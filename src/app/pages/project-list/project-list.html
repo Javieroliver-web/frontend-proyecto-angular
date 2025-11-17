@@ -1,26 +1,29 @@
+<!-- src/app/pages/project-list/project-list.html -->
 <div class="project-list-container">
   <h1 class="page-title">Recomendados</h1>
 
-  <!-- Proyectos Recientes -->
-  <section class="section-proyectos-recientes">
-    <h2 class="section-title">Proyectos recientes</h2>
+  <!-- Proyectos Favoritos (reemplaza "Proyectos Recientes") -->
+  <section class="section-proyectos-favoritos">
+    <h2 class="section-title">⭐ Proyectos Favoritos</h2>
     
-    <div *ngIf="isLoadingRecientes" class="loading-container">
-      <p>Cargando proyectos recientes...</p>
+    <div *ngIf="isLoadingFavoritos" class="loading-container">
+      <p>Cargando proyectos favoritos...</p>
     </div>
 
-    <div *ngIf="!isLoadingRecientes && proyectosRecientes.length > 0" class="project-cards-grid">
+    <div *ngIf="!isLoadingFavoritos && proyectosFavoritos.length > 0" class="project-cards-grid">
       <div 
-        *ngFor="let proyecto of proyectosRecientes" 
-        class="project-card" 
+        *ngFor="let proyecto of proyectosFavoritos" 
+        class="project-card project-card-favorito" 
         [routerLink]="['/proyectos', proyecto.id]">
         <span class="card-icon">{{ getIcono(proyecto) }}</span>
         <h3>{{ proyecto.nombre }}</h3>
+        <span class="favorito-badge">⭐ Favorito</span>
       </div>
     </div>
 
-    <div *ngIf="!isLoadingRecientes && proyectosRecientes.length === 0" class="empty-state">
-      <p>No hay proyectos recientes</p>
+    <div *ngIf="!isLoadingFavoritos && proyectosFavoritos.length === 0" class="empty-state">
+      <p>✨ No tienes proyectos favoritos aún</p>
+      <p class="hint">Marca tus proyectos favoritos haciendo clic en la estrella ⭐</p>
     </div>
   </section>
 
@@ -36,13 +39,26 @@
       <div 
         *ngFor="let proyecto of proyectos" 
         class="project-card" 
-        [routerLink]="['/proyectos', proyecto.id]">
-        <span class="card-icon">{{ getIcono(proyecto) }}</span>
-        <h3>{{ proyecto.nombre }}</h3>
-        <p *ngIf="proyecto.descripcion" class="project-description">{{ proyecto.descripcion }}</p>
-        <span class="project-status" [ngClass]="'status-' + getEstadoClass(proyecto.estado)">
-          {{ proyecto.estado }}
-        </span>
+        [class.is-favorito]="esFavorito(proyecto)">
+        
+        <!-- Botón de favorito -->
+        <button 
+          class="btn-favorito" 
+          (click)="toggleFavorito(proyecto, $event)"
+          [class.active]="esFavorito(proyecto)"
+          title="{{ esFavorito(proyecto) ? 'Quitar de favoritos' : 'Marcar como favorito' }}">
+          {{ esFavorito(proyecto) ? '⭐' : '☆' }}
+        </button>
+
+        <!-- Contenido de la tarjeta (clickeable para navegar) -->
+        <div class="card-content" [routerLink]="['/proyectos', proyecto.id]">
+          <span class="card-icon">{{ getIcono(proyecto) }}</span>
+          <h3>{{ proyecto.nombre }}</h3>
+          <p *ngIf="proyecto.descripcion" class="project-description">{{ proyecto.descripcion }}</p>
+          <span class="project-status" [ngClass]="'status-' + getEstadoClass(proyecto.estado)">
+            {{ proyecto.estado }}
+          </span>
+        </div>
       </div>
     </div>
 

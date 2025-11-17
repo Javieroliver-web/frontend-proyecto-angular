@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ProjectService, Proyecto } from '../../services/project.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-project-list',
@@ -13,23 +14,26 @@ import { ProjectService, Proyecto } from '../../services/project.service';
 })
 export class ProjectListComponent implements OnInit {
   proyectos: Proyecto[] = [];
-  proyectosRecientes: Proyecto[] = [];
+  proyectosFavoritos: Proyecto[] = [];
   isLoading = true;
-  isLoadingRecientes = true;
+  isLoadingFavoritos = true;
   errorMessage = '';
 
-  // Mapeo de iconos por ID o nombre de proyecto (fallback si no viene del backend)
+  // Mapeo de iconos por ID
   iconMap: { [key: number]: string } = {
     1: '📦',
     2: '🚀',
     3: '📈'
   };
 
-  constructor(private proyectoService: ProjectService) {}
+  constructor(
+    private proyectoService: ProjectService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.cargarProyectos();
-    this.cargarProyectosRecientes();
+    this.cargarProyectosFavoritos();
   }
 
   cargarProyectos(): void {
@@ -47,18 +51,41 @@ export class ProjectListComponent implements OnInit {
     });
   }
 
-  cargarProyectosRecientes(): void {
-    this.isLoadingRecientes = true;
-    this.proyectoService.getProyectosRecientes().subscribe({
+  cargarProyectosFavoritos(): void {
+    const usuario = this.authService.getCurrentUser();
+    if (!usuario) {
+      this.isLoadingFavoritos = false;
+      return;
+    }
+
+    this.isLoadingFavoritos = true;
+    this.proyectoService.getProyectosFavoritos(usuario.id).subscribe({
       next: (proyectos: Proyecto[]) => {
-        this.proyectosRecientes = proyectos;
-        this.isLoadingRecientes = false;
+        this.proyectosFavoritos = proyectos;
+        this.isLoadingFavoritos = false;
       },
       error: (error: any) => {
-        console.error('Error al cargar proyectos recientes:', error);
-        // Si falla, intentamos usar los proyectos normales como fallback
-        this.proyectosRecientes = [];
-        this.isLoadingRecientes = false;
+        console.error('Error al cargar proyectos favoritos:', error);
+        this.proyectosFavoritos = [];
+        this.isLoadingFavoritos = false;
+      }
+    });
+  }
+
+  toggleFavorito(proyecto: Proyecto, event: Event): void {
+    event.stopPropagation(); // Evitar navegación al hacer clic en estrella
+    
+    const usuario = this.authService.getCurrentUser();
+    if (!usuario) return;
+
+    this.proyectoService.toggleFavorito(proyecto.id, usuario.id).subscribe({
+      next: () => {
+        // Recargar ambas listas
+        this.cargarProyectosFavoritos();
+        this.cargarProyectos();
+      },
+      error: (error: any) => {
+        console.error('Error al marcar favorito:', error);
       }
     });
   }
@@ -68,12 +95,10 @@ export class ProjectListComponent implements OnInit {
   }
 
   getEstadoClass(estado: string | null | undefined): string {
-    // 1. Si 'estado' es nulo o indefinido, devuelve 'estado-default' inmediatamente.
     if (!estado) {
       return 'estado-default';
     }
   
-    // 2. Si 'estado' SÍ existe, hace el resto del código.
     const estadoMap: { [key: string]: string } = {
       'activo': 'estado-activo',
       'completado': 'estado-completado',
@@ -81,7 +106,10 @@ export class ProjectListComponent implements OnInit {
       'planificado': 'estado-planificado'
     };
     
-    // Ahora esta línea es segura porque sabemos que 'estado' no es nulo.
     return estadoMap[estado.toLowerCase()] || 'estado-default';
+  }
+
+  esFavorito(proyecto: Proyecto): boolean {
+    return this.proyectosFavoritos.some(p => p.id === proyecto.id);
   }
 }

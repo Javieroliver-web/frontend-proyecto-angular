@@ -1,3 +1,4 @@
+// src/app/services/project.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -6,11 +7,13 @@ import { environment } from '../../enviroment/enviroment.development';
 export interface Proyecto {
   id: number;
   nombre: string;
-  estado: string;
   descripcion?: string;
+  fecha_inicio?: Date | string;
+  fecha_fin?: Date | string;
+  estado: string;
+  usuario_id: number;
+  es_favorito?: boolean;
   icono?: string;
-  fecha_creacion?: Date | string;
-  fecha_actualizacion?: Date | string;
 }
 
 @Injectable({
@@ -19,25 +22,57 @@ export interface Proyecto {
 export class ProjectService {
   private apiUrl = `${environment.apiUrl}/proyectos`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  // Método para obtener todos los proyectos
+  // ============================================
+  // ENDPOINTS BÁSICOS (Ya los tienes)
+  // ============================================
+
+  /**
+   * GET /api/proyectos
+   * Obtiene todos los proyectos
+   */
   getProyectos(): Observable<Proyecto[]> {
     return this.http.get<Proyecto[]>(this.apiUrl);
   }
 
-  // Método para obtener proyectos recientes
-  getProyectosRecientes(): Observable<Proyecto[]> {
-    return this.http.get<Proyecto[]>(`${this.apiUrl}`);
-  }
-
-  // Método para obtener un proyecto por su ID
+  /**
+   * GET /api/proyectos/{id}
+   * Obtiene un proyecto por ID
+   */
   getProyecto(id: number): Observable<Proyecto> {
     return this.http.get<Proyecto>(`${this.apiUrl}/${id}`);
   }
 
-  // Método para eliminar un proyecto
+  /**
+   * DELETE /api/proyectos/{id}
+   * Elimina un proyecto
+   */
   eliminarProyecto(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  // ============================================
+  // ENDPOINTS DE FAVORITOS (NUEVOS)
+  // ============================================
+
+  /**
+   * GET /api/proyectos/usuario/{usuarioId}/favoritos
+   * Obtiene los proyectos favoritos de un usuario
+   */
+  getProyectosFavoritos(usuarioId: number): Observable<Proyecto[]> {
+    return this.http.get<Proyecto[]>(`${this.apiUrl}/usuario/${usuarioId}/favoritos`);
+  }
+
+  /**
+   * POST /api/proyectos/{proyectoId}/favorito
+   * Marca o desmarca un proyecto como favorito
+   * 
+   * Body: { "usuario_id": number }
+   */
+  toggleFavorito(proyectoId: number, usuarioId: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${proyectoId}/favorito`, { 
+      usuario_id: usuarioId 
+    });
   }
 }
