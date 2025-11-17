@@ -67,13 +67,21 @@ export class ProjectListComponent implements OnInit {
     return proyecto.icono || this.iconMap[proyecto.id] || '📁';
   }
 
-  getEstadoClass(estado: string): string {
+  getEstadoClass(estado: string | null | undefined): string {
+    // 1. Si 'estado' es nulo o indefinido, devuelve 'estado-default' inmediatamente.
+    if (!estado) {
+      return 'estado-default';
+    }
+  
+    // 2. Si 'estado' SÍ existe, hace el resto del código.
     const estadoMap: { [key: string]: string } = {
       'activo': 'estado-activo',
       'completado': 'estado-completado',
       'pausado': 'estado-pausado',
       'planificado': 'estado-planificado'
     };
+    
+    // Ahora esta línea es segura porque sabemos que 'estado' no es nulo.
     return estadoMap[estado.toLowerCase()] || 'estado-default';
   }
 }

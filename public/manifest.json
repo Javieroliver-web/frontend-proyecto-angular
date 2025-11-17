@@ -9,25 +9,25 @@
     "orientation": "portrait-primary",
     "icons": [
       {
-        "src": "assets/icons/icon-72x72.png",
+        "src": "assets/icons/homeicon.png",
         "sizes": "72x72",
         "type": "image/png",
         "purpose": "maskable any"
       },
       {
-        "src": "assets/icons/icon-96x96.png",
+        "src": "assets/icons/notificationicon.png",
         "sizes": "96x96",
         "type": "image/png",
         "purpose": "maskable any"
       },
       {
-        "src": "assets/icons/icon-128x128.png",
+        "src": "assets/icons/usericon.png",
         "sizes": "128x128",
         "type": "image/png",
         "purpose": "maskable any"
       },
       {
-        "src": "assets/icons/icon-144x144.png",
+        "src": "/icons/exiticon.png",
         "sizes": "144x144",
         "type": "image/png",
         "purpose": "maskable any"

@@ -28,7 +28,7 @@ export class ProjectService {
 
   // Método para obtener proyectos recientes
   getProyectosRecientes(): Observable<Proyecto[]> {
-    return this.http.get<Proyecto[]>(`${this.apiUrl}/recientes`);
+    return this.http.get<Proyecto[]>(`${this.apiUrl}`);
   }
 
   // Método para obtener un proyecto por su ID

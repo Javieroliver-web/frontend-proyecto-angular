@@ -116,22 +116,27 @@ form {
   position: absolute;
   z-index: 1;
   opacity: 0.7;
-  /* Placeholder para tu gráfico de barras verde */
   width: 120px;
   height: 100px;
-  background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjgwIiB2aWV3Qm94PSIwIDAgMTAwIDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSI4MCIgcngPSI0IiBmaWxsPSIjN2JkNTdiIi8+PHJlY3QgeD0iMzAiIHk9IjIwIiB3aWR0aD0iMjAiIGhlaWdodD0iNjAiIHJ4PSI0IiBmaWxsPSIjYTRhNDU5Ii8+PHJlY3QgeD0iNjAiIHk9IjQwIiB3aWR0aD0iMjAiIGhlaWdodD0iNDAiIHJ4PSI0IiBmaWxsPSIjY2NlYWNlIi8+PC9zdmc+');
-  background-size: contain;
-  background-repeat: no-repeat;
   bottom: 10%;
   left: 10%;
   transform: rotate(-10deg);
+}
+
+.deco-chart-1::before {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #7bd55b 0%, #a4a459 50%, #cceace 100%);
+  opacity: 0.3;
+  border-radius: 8px;
 }
 
 .deco-icon-left,
 .deco-icon-right {
   position: absolute;
   z-index: 1;
-  font-size: 4.5rem;
   opacity: 0.45;
   pointer-events: none;
   animation: float 3s ease-in-out infinite;
@@ -142,7 +147,11 @@ form {
   top: 50%;
   transform: translateY(-50%);
   animation-delay: 0s;
-  /* Color azul verdoso más intenso para el clipboard */
+}
+
+.deco-icon-left img {
+  width: 80px;
+  height: 80px;
   filter: drop-shadow(0 6px 16px rgba(77, 143, 133, 0.6)) 
           drop-shadow(0 0 30px rgba(77, 143, 133, 0.4))
           drop-shadow(0 0 15px rgba(77, 143, 133, 0.3));
@@ -153,7 +162,7 @@ form {
   top: 50%;
   transform: translateY(-50%);
   animation-delay: 1.5s;
-  /* Color verde más intenso para el check */
+  font-size: 4.5rem;
   filter: drop-shadow(0 6px 16px rgba(76, 175, 80, 0.6)) 
           drop-shadow(0 0 30px rgba(76, 175, 80, 0.4))
           drop-shadow(0 0 15px rgba(76, 175, 80, 0.3));
@@ -165,5 +174,37 @@ form {
   }
   50% {
     transform: translateY(-50%) translateY(-20px);
+  }
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .login-box {
+    padding: 2rem;
+    margin: 1rem;
+  }
+
+  .deco-icon-left,
+  .deco-icon-right {
+    opacity: 0.2;
+  }
+
+  .deco-icon-left {
+    left: 5%;
+  }
+
+  .deco-icon-left img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .deco-icon-right {
+    right: 5%;
+    font-size: 3rem;
+  }
+
+  .deco-chart-1 {
+    width: 80px;
+    height: 70px;
   }
 }
