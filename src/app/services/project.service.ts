@@ -24,10 +24,6 @@ export class ProjectService {
 
   constructor(private http: HttpClient) {}
 
-  // ============================================
-  // ENDPOINTS BÁSICOS (Ya los tienes)
-  // ============================================
-
   /**
    * GET /api/proyectos
    * Obtiene todos los proyectos
@@ -52,13 +48,11 @@ export class ProjectService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  // ============================================
-  // ENDPOINTS DE FAVORITOS (NUEVOS)
-  // ============================================
-
   /**
    * GET /api/proyectos/usuario/{usuarioId}/favoritos
    * Obtiene los proyectos favoritos de un usuario
+   * 
+   * NOTA: Este endpoint debe implementarse en el backend si no existe
    */
   getProyectosFavoritos(usuarioId: number): Observable<Proyecto[]> {
     return this.http.get<Proyecto[]>(`${this.apiUrl}/usuario/${usuarioId}/favoritos`);
@@ -69,10 +63,13 @@ export class ProjectService {
    * Marca o desmarca un proyecto como favorito
    * 
    * Body: { "usuario_id": number }
+   * 
+   * NOTA: Este endpoint debe implementarse en el backend si no existe
    */
-  toggleFavorito(proyectoId: number, usuarioId: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}/${proyectoId}/favorito`, { 
-      usuario_id: usuarioId 
-    });
+  toggleFavorito(proyectoId: number, usuarioId: number): Observable<{ success: boolean; message: string; es_favorito: boolean }> {
+    return this.http.post<{ success: boolean; message: string; es_favorito: boolean }>(
+      `${this.apiUrl}/${proyectoId}/favorito`, 
+      { usuario_id: usuarioId }
+    );
   }
 }

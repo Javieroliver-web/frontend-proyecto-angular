@@ -19,6 +19,9 @@ export class ProjectListComponent implements OnInit {
   isLoadingFavoritos = true;
   errorMessage = '';
 
+  // IDs de proyectos favoritos para búsqueda rápida
+  private favoritosIds: Set<number> = new Set();
+
   // Mapeo de iconos por ID
   iconMap: { [key: number]: string } = {
     1: '📦',
@@ -42,6 +45,7 @@ export class ProjectListComponent implements OnInit {
       next: (proyectos: Proyecto[]) => {
         this.proyectos = proyectos;
         this.isLoading = false;
+        console.log('Proyectos cargados:', proyectos);
       },
       error: (error: any) => {
         console.error('Error al cargar proyectos:', error);
@@ -54,6 +58,7 @@ export class ProjectListComponent implements OnInit {
   cargarProyectosFavoritos(): void {
     const usuario = this.authService.getCurrentUser();
     if (!usuario) {
+      console.warn('No hay usuario autenticado');
       this.isLoadingFavoritos = false;
       return;
     }
@@ -62,30 +67,79 @@ export class ProjectListComponent implements OnInit {
     this.proyectoService.getProyectosFavoritos(usuario.id).subscribe({
       next: (proyectos: Proyecto[]) => {
         this.proyectosFavoritos = proyectos;
+        // Actualizar el Set de IDs favoritos
+        this.favoritosIds = new Set(proyectos.map(p => p.id));
         this.isLoadingFavoritos = false;
+        console.log('Proyectos favoritos cargados:', proyectos);
       },
       error: (error: any) => {
         console.error('Error al cargar proyectos favoritos:', error);
         this.proyectosFavoritos = [];
+        this.favoritosIds.clear();
         this.isLoadingFavoritos = false;
       }
     });
   }
 
   toggleFavorito(proyecto: Proyecto, event: Event): void {
+    console.log('Click en estrella detectado!', proyecto.nombre);
     event.stopPropagation(); // Evitar navegación al hacer clic en estrella
+    event.preventDefault();
     
     const usuario = this.authService.getCurrentUser();
-    if (!usuario) return;
+    if (!usuario) {
+      console.error('No hay usuario autenticado');
+      this.errorMessage = 'Debes iniciar sesión para marcar favoritos';
+      return;
+    }
 
+    console.log(`Toggling favorito para proyecto ${proyecto.id}, usuario ${usuario.id}`);
+
+    // Actualización optimista de la UI
+    const eraFavorito = this.esFavorito(proyecto);
+    
     this.proyectoService.toggleFavorito(proyecto.id, usuario.id).subscribe({
-      next: () => {
-        // Recargar ambas listas
-        this.cargarProyectosFavoritos();
-        this.cargarProyectos();
+      next: (response) => {
+        console.log('Respuesta del servidor:', response);
+        
+        // Actualizar listas basado en la respuesta del servidor
+        if (response.es_favorito) {
+          // Se agregó a favoritos
+          if (!this.favoritosIds.has(proyecto.id)) {
+            this.favoritosIds.add(proyecto.id);
+            this.proyectosFavoritos.push(proyecto);
+          }
+        } else {
+          // Se quitó de favoritos
+          this.favoritosIds.delete(proyecto.id);
+          this.proyectosFavoritos = this.proyectosFavoritos.filter(p => p.id !== proyecto.id);
+        }
+        
+        // Mensaje de feedback
+        const mensaje = response.es_favorito 
+          ? `${proyecto.nombre} agregado a favoritos` 
+          : `${proyecto.nombre} quitado de favoritos`;
+        console.log(mensaje);
       },
       error: (error: any) => {
         console.error('Error al marcar favorito:', error);
+        
+        // Mostrar mensaje de error más específico
+        if (error.status === 401) {
+          this.errorMessage = 'Sesión expirada. Por favor inicia sesión nuevamente.';
+        } else if (error.status === 404) {
+          this.errorMessage = 'Proyecto no encontrado.';
+        } else {
+          this.errorMessage = error.error?.message || 'Error al actualizar favorito. Intenta nuevamente.';
+        }
+        
+        // Limpiar el mensaje de error después de 3 segundos
+        setTimeout(() => {
+          this.errorMessage = '';
+        }, 3000);
+        
+        // Revertir el cambio optimista recargando las listas
+        this.cargarProyectosFavoritos();
       }
     });
   }
@@ -110,6 +164,6 @@ export class ProjectListComponent implements OnInit {
   }
 
   esFavorito(proyecto: Proyecto): boolean {
-    return this.proyectosFavoritos.some(p => p.id === proyecto.id);
+    return this.favoritosIds.has(proyecto.id);
   }
 }

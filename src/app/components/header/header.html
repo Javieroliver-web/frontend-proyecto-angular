@@ -7,6 +7,9 @@
         <span class="icon-button">🔔</span>
         <span class="icon-button">🎧</span>
         <span class="icon-button">🖌️</span>
-        <div class="user-avatar"></div>
+
+        <div class="user-avatar" (click)="logout()" title="Cerrar sesión">
+            {{ getInitials() }}
+        </div>
     </div>
 </header>

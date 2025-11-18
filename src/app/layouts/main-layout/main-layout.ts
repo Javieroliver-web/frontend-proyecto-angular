@@ -1,8 +1,9 @@
 // src/app/layouts/main-layout/main-layout.ts
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
-import { AuthService, Usuario } from '../../services/auth.service';
+import { RouterOutlet } from '@angular/router';
+import { Header } from '../../components/header/header'; // IMPORTADO
+import { Sidebar } from '../../components/sidebar/sidebar'; // IMPORTADO
 
 @Component({
   selector: 'app-main-layout',
@@ -10,33 +11,12 @@ import { AuthService, Usuario } from '../../services/auth.service';
   imports: [
     CommonModule,
     RouterOutlet,
-    RouterLink,
-    RouterLinkActive
+    Header,     // AÑADIDO
+    Sidebar     // AÑADIDO
   ],
   templateUrl: './main-layout.html',
   styleUrls: ['./main-layout.css']
 })
-export class MainLayoutComponent implements OnInit {
-  currentUser: Usuario | null = null;
-
-  constructor(private authService: AuthService) {}
-
-  ngOnInit(): void {
-    this.authService.currentUser$.subscribe(user => {
-      this.currentUser = user;
-    });
-  }
-
-  logout(): void {
-    if (confirm('¿Cerrar sesión?')) {
-      this.authService.logout();
-    }
-  }
-
-  getInitials(): string {
-    if (!this.currentUser) return '?';
-    const nombre = this.currentUser.nombre?.charAt(0) || '';
-    const apellido = this.currentUser.apellido?.charAt(0) || '';
-    return (nombre + apellido).toUpperCase();
-  }
+export class MainLayoutComponent {
+  // Toda la lógica de usuario se ha movido a header.ts
 }

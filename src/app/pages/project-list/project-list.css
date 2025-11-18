@@ -71,7 +71,7 @@
   border: 2px solid #fbbf24;
 }
 
-/* Botón de favorito (estrella) */
+/* Botón de favorito (estrella) - CRÍTICO */
 .btn-favorito {
   position: absolute;
   top: 12px;
@@ -88,13 +88,18 @@
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
-  z-index: 10;
+  z-index: 100; /* Aumentado para estar por encima de todo */
+  pointer-events: auto; /* Asegurar que sea clickeable */
 }
 
 .btn-favorito:hover {
   background: rgba(255, 255, 255, 0.3);
   transform: scale(1.1);
   border-color: rgba(255, 255, 255, 0.5);
+}
+
+.btn-favorito:active {
+  transform: scale(0.95);
 }
 
 .btn-favorito.active {
@@ -116,6 +121,8 @@
   gap: 1rem;
   flex: 1;
   cursor: pointer;
+  position: relative;
+  z-index: 1; /* Menor que el botón de favorito */
 }
 
 .card-icon {
@@ -220,8 +227,20 @@
   padding: 1rem 1.5rem;
   border-radius: 8px;
   font-size: 0.9rem;
-  margin-top: 1rem;
+  margin-bottom: 1rem;
   border-left: 4px solid #c33;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Responsive */
