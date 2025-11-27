@@ -26,7 +26,12 @@
               {
                 "glob": "**/*",
                 "input": "src/img",
-                "output": "/img/"
+                "output": "/assets/img/"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/icons",
+                "output": "/assets/icons/"
               }
             ],
             "styles": ["src/styles.css"],
@@ -60,10 +65,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "frontend-proyecto-angular:build:production"
+              "buildTarget": "sprintix-frontend:build:production"
             },
             "development": {
-              "buildTarget": "frontend-proyecto-angular:build:development"
+              "buildTarget": "sprintix-frontend:build:development"
             }
           },
           "defaultConfiguration": "development",

@@ -189,95 +189,54 @@
 
         <div class="content-area">
           <h2 class="section-title">Resumen</h2>
-          <div
-            class="stats-row"
-            style="display: flex; gap: 20px; margin-bottom: 2rem"
-          >
-            <div
-              class="stat-box"
-              style="
-                background: white;
-                padding: 15px;
-                border-radius: 8px;
-                flex: 1;
-                text-align: center;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-              "
-            >
-              <h3
-                style="margin: 0; font-size: 2rem; color: var(--primary-color)"
-                th:text="${stats.tareasPendientes}"
-              >
-                0
-              </h3>
-              <span style="color: #666">Tareas Pendientes</span>
+          
+          <div class="stats-row">
+            <div class="stat-box">
+              <h3>{{ stats.tareasPendientes }}</h3>
+              <span>Tareas Pendientes</span>
             </div>
-            <div
-              class="stat-box"
-              style="
-                background: white;
-                padding: 15px;
-                border-radius: 8px;
-                flex: 1;
-                text-align: center;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-              "
-            >
-              <h3
-                style="margin: 0; font-size: 2rem; color: var(--primary-color)"
-                th:text="${stats.proyectosActivos}"
-              >
-                0
-              </h3>
-              <span style="color: #666">Proyectos Activos</span>
+            <div class="stat-box">
+              <h3>{{ stats.proyectosActivos }}</h3>
+              <span>Proyectos Activos</span>
             </div>
           </div>
-
+        
           <h2 class="section-title">Proyectos recientes</h2>
           <div class="rec-grid">
-            <div
-              class="rec-card"
-              th:each="p : ${stats.ultimosProyectos}"
-              th:onclick="'window.location.href=\'/board?id=' + ${p.id} + '\''"
-            >
-              <h3 th:text="${p.nombre}">Nombre Proyecto</h3>
-              <span
-                style="font-size: 0.8rem; opacity: 0.8"
-                th:text="${p.fecha_inicio}"
-                >Fecha</span
-              >
+            <div class="rec-card" 
+                 *ngFor="let p of stats.ultimosProyectos" 
+                 (click)="irAProyecto(p.id)">
+              <h3>{{ p.nombre }}</h3>
+              <span>{{ p.fecha_inicio }}</span>
             </div>
-            <p
-              th:if="${#lists.isEmpty(stats.ultimosProyectos)}"
-              style="color: #777"
-            >
+            
+            <p *ngIf="stats.ultimosProyectos.length === 0" style="color: #777; grid-column: 1/-1; text-align: center;">
               No hay proyectos recientes
             </p>
           </div>
-
+        
           <div class="tabs-header">
             <button class="tab-link active">Próximas Tareas</button>
           </div>
+          
           <div class="task-list">
-            <div class="task-row" th:each="t : ${stats.tareasProximas}">
-              <span class="task-title" th:text="${t.titulo}">Tarea</span>
-
-              <span
-                style="font-size: 0.85rem; color: #666; margin-right: 15px"
-                th:if="${t.fecha_formateada != ''}"
-                th:text="${t.fecha_formateada}"
-                >00-00-0000</span
-              >
-
+            <div class="task-row" *ngFor="let t of stats.tareasProximas">
+              <span class="task-title">{{ t.titulo }}</span>
+        
+              <span style="font-size: 0.85rem; color: #666; margin-right: 15px"
+                    *ngIf="t.fecha_formateada">
+                {{ t.fecha_formateada }}
+              </span>
+        
               <div class="task-meta">
-                <span class="badge" th:text="${t.estado}">Estado</span>
+                <span class="badge" style="background: #eee; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem;">
+                    {{ t.estado }}
+                </span>
               </div>
             </div>
-            <p
-              th:if="${#lists.isEmpty(stats.tareasProximas)}"
-              style="color: #777"
-            >
-              ¡Estás al día!
+            
+            <p *ngIf="stats.tareasProximas.length === 0" style="color: #777; padding: 1rem; text-align: center;">
+              ¡Estás al día! No hay tareas próximas.
             </p>
           </div>
         </div>
