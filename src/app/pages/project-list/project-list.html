@@ -1,10 +1,16 @@
 <!-- src/app/pages/project-list/project-list.html -->
 <div class="project-list-container">
-  <h1 class="page-title">Recomendados</h1>
+  
+  <!-- Cabecera con botón de crear -->
+  <div class="page-header">
+    <h1 class="page-title">Mis Proyectos</h1>
+    <button class="btn btn-primary" (click)="abrirModal()">+ Crear Proyecto</button>
+  </div>
 
   <!-- Mensaje de error global -->
   <div *ngIf="errorMessage" class="error-message">
     {{ errorMessage }}
+    <button (click)="errorMessage = ''" style="float: right; background: none; border: none; cursor: pointer;">×</button>
   </div>
 
   <!-- Proyectos Favoritos -->
@@ -12,7 +18,8 @@
     <h2 class="section-title">⭐ Proyectos Favoritos</h2>
     
     <div *ngIf="isLoadingFavoritos" class="loading-container">
-      <p>Cargando proyectos favoritos...</p>
+      <div class="spinner"></div>
+      <p>Cargando favoritos...</p>
     </div>
 
     <div *ngIf="!isLoadingFavoritos && proyectosFavoritos.length > 0" class="project-cards-grid">
@@ -24,12 +31,13 @@
         <button 
           class="btn-favorito active" 
           (click)="toggleFavorito(proyecto, $event)"
-          title="Quitar de favoritos">
+          title="Quitar de favoritos"
+          type="button">
           ⭐
         </button>
 
         <!-- Contenido clickeable -->
-        <div class="card-content" [routerLink]="['/proyectos', proyecto.id]">
+        <div class="card-content" [routerLink]="['/board']" [queryParams]="{id: proyecto.id}">
           <span class="card-icon">{{ getIcono(proyecto) }}</span>
           <h3>{{ proyecto.nombre }}</h3>
           <p *ngIf="proyecto.descripcion" class="project-description">{{ proyecto.descripcion }}</p>
@@ -46,9 +54,10 @@
 
   <!-- Todos los Proyectos -->
   <section class="section-todos-proyectos">
-    <h2 class="section-title">Todos los proyectos</h2>
+    <h2 class="section-title">📂 Todos los proyectos</h2>
     
     <div *ngIf="isLoading" class="loading-container">
+      <div class="spinner"></div>
       <p>Cargando proyectos...</p>
     </div>
 
@@ -64,13 +73,12 @@
           (click)="toggleFavorito(proyecto, $event)"
           [class.active]="esFavorito(proyecto)"
           [title]="esFavorito(proyecto) ? 'Quitar de favoritos' : 'Marcar como favorito'"
-          type="button"
-          [attr.data-proyecto-id]="proyecto.id">
+          type="button">
           {{ esFavorito(proyecto) ? '⭐' : '☆' }}
         </button>
 
-        <!-- Contenido de la tarjeta (clickeable para navegar) -->
-        <div class="card-content" [routerLink]="['/proyectos', proyecto.id]">
+        <!-- Contenido de la tarjeta -->
+        <div class="card-content" [routerLink]="['/board']" [queryParams]="{id: proyecto.id}">
           <span class="card-icon">{{ getIcono(proyecto) }}</span>
           <h3>{{ proyecto.nombre }}</h3>
           <p *ngIf="proyecto.descripcion" class="project-description">{{ proyecto.descripcion }}</p>
@@ -82,7 +90,70 @@
     </div>
 
     <div *ngIf="!isLoading && proyectos.length === 0" class="empty-state">
-      <p>No hay proyectos disponibles</p>
+      <p>📂 No hay proyectos disponibles</p>
+      <p class="hint">Crea tu primer proyecto usando el botón superior</p>
     </div>
   </section>
+</div>
+
+<!-- MODAL DE CREAR PROYECTO -->
+<div class="modal-overlay" *ngIf="mostrarModal" (click)="cerrarModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>📂 Nuevo Proyecto</h3>
+      <button class="btn-close" (click)="cerrarModal()">×</button>
+    </div>
+    
+    <form (ngSubmit)="guardarProyecto()">
+      <div class="form-group">
+        <label>Nombre del Proyecto *</label>
+        <input 
+          type="text" 
+          [(ngModel)]="nuevoProyecto.nombre" 
+          name="nombre"
+          class="form-control" 
+          placeholder="Ej: Desarrollo Web App"
+          required>
+      </div>
+
+      <div class="form-group">
+        <label>Descripción</label>
+        <textarea 
+          [(ngModel)]="nuevoProyecto.descripcion" 
+          name="descripcion"
+          class="form-control" 
+          rows="3"
+          placeholder="Describe brevemente el proyecto..."></textarea>
+      </div>
+
+      <div class="row-grid">
+        <div class="form-group">
+          <label>Fecha Inicio</label>
+          <input 
+            type="date" 
+            [(ngModel)]="nuevoProyecto.fecha_inicio" 
+            name="fecha_inicio"
+            class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label>Fecha Fin (Estimada)</label>
+          <input 
+            type="date" 
+            [(ngModel)]="nuevoProyecto.fecha_fin" 
+            name="fecha_fin"
+            class="form-control">
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" (click)="cerrarModal()">
+          Cancelar
+        </button>
+        <button type="submit" class="btn btn-primary">
+          Crear Proyecto
+        </button>
+      </div>
+    </form>
+  </div>
 </div>
