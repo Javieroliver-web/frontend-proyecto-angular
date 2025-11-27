@@ -1,15 +1,18 @@
-<header class="header">
-    <div class="search-bar">
-        <input type="search" placeholder="Buscar...">
-    </div>
-    <div class="header-actions">
-        <button class="btn btn-primary">Crear</button>
-        <span class="icon-button">🔔</span>
-        <span class="icon-button">🎧</span>
-        <span class="icon-button">🖌️</span>
+<header class="header-container">
+    <div class="search-bar"></div> <div class="header-actions">
+        <button class="btn btn-primary" routerLink="/proyectos" style="margin-right: 20px;">+ Crear Proyecto</button>
 
-        <div class="user-avatar" (click)="logout()" title="Cerrar sesión">
-            {{ getInitials() }}
+        <div class="icon-wrapper">
+            <img src="assets/icons/notificationicon.png" class="header-icon">
+            <span class="badge">2</span>
         </div>
+
+        <div class="user-profile">
+            <div class="avatar">{{ getInitials() }}</div>
+        </div>
+        
+        <a (click)="logout()" class="logout-btn" title="Salir">
+            <img src="assets/icons/exiticon.png" style="height: 24px;">
+        </a>
     </div>
 </header>

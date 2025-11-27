@@ -1,49 +1,35 @@
-:host {
-    display: block;
+.header-container {
     height: var(--header-height);
-    flex-shrink: 0; /* Evita que se encoja */
-}
-
-.header {
-    width: 100%;
-    height: 100%;
-    background: var(--bg-white);
-    border-bottom: 1px solid var(--border-color);
+    background: #e6e6e6; /* Gris claro como en tu diseño original */
+    border-bottom: 1px solid #ccc;
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    padding: 0 2rem;
-}
-
-.search-bar input {
-    width: 300px;
-    padding: 0.75rem 1rem;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    font-size: 0.9rem;
-}
-
-.header-actions {
-    display: flex;
     align-items: center;
-    gap: 1.5rem; /* Espacio entre los iconos y botones */
+    padding: 0 2rem;
+    flex-shrink: 0;
 }
 
-.icon-button {
-    font-size: 1.5rem;
-    color: var(--text-secondary);
-    cursor: pointer;
-    transition: color 0.2s ease;
+.header-actions { display: flex; align-items: center; gap: 20px; }
+
+.header-icon { height: 28px; cursor: pointer; opacity: 0.7; transition: 0.2s; }
+.header-icon:hover { opacity: 1; transform: scale(1.1); }
+
+.icon-wrapper { position: relative; display: flex; align-items: center; }
+.badge {
+    position: absolute; top: -5px; right: -5px;
+    background: #e74c3c; color: white;
+    font-size: 0.7rem; padding: 2px 5px; border-radius: 10px;
+    font-weight: bold; border: 2px solid #e6e6e6;
 }
 
-.icon-button:hover {
-    color: var(--text-primary);
-}
-
-.user-avatar {
-    width: 40px;
-    height: 40px;
+.avatar {
+    width: 40px; height: 40px;
+    background: #4285f4; color: white;
     border-radius: 50%;
-    background-color: #ddd; /* Placeholder */
-    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; font-size: 1.1rem;
+    cursor: default;
 }
+
+.logout-btn { cursor: pointer; opacity: 0.6; transition: 0.2s; display: flex; }
+.logout-btn:hover { opacity: 1; }

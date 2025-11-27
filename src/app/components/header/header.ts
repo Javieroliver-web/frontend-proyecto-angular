@@ -1,37 +1,28 @@
-// src/app/components/header/header.ts
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common'; // Necesario para *ngIf y {{...}}
+import { Component, inject, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { AuthService, Usuario } from '../../services/auth.service';
 
 @Component({
   selector: 'app-header',
-  standalone: true, // Asumiendo que es standalone
-  imports: [CommonModule],
+  standalone: true,
+  imports: [CommonModule, RouterLink],
   templateUrl: './header.html',
-  styleUrl: './header.css',
+  styleUrls: ['./header.css']
 })
-export class Header implements OnInit {
+export class HeaderComponent implements OnInit {
+  public authService = inject(AuthService);
   currentUser: Usuario | null = null;
 
-  constructor(private authService: AuthService) {}
-
-  ngOnInit(): void {
-    // Nos suscribimos a los cambios del usuario
-    this.authService.currentUser$.subscribe(user => {
-      this.currentUser = user;
-    });
-  }
-
-  logout(): void {
-    if (confirm('¿Cerrar sesión?')) {
-      this.authService.logout(); // Llama al método de logout del servicio
-    }
+  ngOnInit() {
+    this.authService.currentUser$.subscribe((user) => this.currentUser = user);
   }
 
   getInitials(): string {
-    if (!this.currentUser) return '?'; // Devuelve '?' si no hay usuario
-    const nombre = this.currentUser.nombre?.charAt(0) || '';
-    const apellido = this.currentUser.apellido?.charAt(0) || '';
-    return (nombre + apellido).toUpperCase();
+    return this.currentUser?.nombre ? this.currentUser.nombre.charAt(0).toUpperCase() : 'U';
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }

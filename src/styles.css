@@ -1,80 +1,58 @@
-/* ==================
-   Variables y Reseteo Global
-   ================== */
-   :root {
-    --font-family: 'Inter', sans-serif;
-    --primary-color: #2a9d8f;  /* Un verde azulado (teal) de tus diseños */
-    --primary-color-dark: #264653;
-    --secondary-color: #6c757d;
-    --bg-light: #f4f7fa;        /* Fondo principal del contenido */
-    --bg-white: #ffffff;
-    --border-color: #e_dde;     /* Borde sutil */
-    --text-primary: #333;
-    --text-secondary: #555;
-    --sidebar-bg: #fdfdfd;      /* Fondo de la barra lateral */
-    --sidebar-width: 260px;
-    --header-height: 70px;
+/* src/styles.css */
+:root {
+    --primary-color: #3b8ea5;       /* Tu color Teal principal */
+    --primary-dark: #2a6f82;
+    --text-color: #333;
+    --bg-gradient: linear-gradient(135deg, #ffffff 0%, #d4eff4 50%, #a2d9e2 100%);
+    --bg-dashboard: linear-gradient(to bottom, #dbeff5 0%, #b8e2ed 100%); /* Fondo azulado suave */
+    --sidebar-width: 240px;
+    --header-height: 60px;
+    
+    /* Colores de estado */
+    --danger-bg: #fee2e2;
+    --danger-text: #b91c1c;
+    --success-color: #2ecc71;
+    
+    /* Variables para Modales */
+    --bg-overlay: rgba(44, 62, 80, 0.6);
 }
 
-/* Reseteo básico */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
 
-body {
-    font-family: var(--font-family);
-    background-color: var(--bg-light);
-    color: var(--text-primary);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
+body, html { height: 100%; overflow: hidden; color: var(--text-color); }
 
-a {
-    text-decoration: none;
-    color: inherit;
-}
+/* Reset de enlaces */
+a { text-decoration: none; color: inherit; cursor: pointer; }
+ul { list-style: none; }
 
-ul {
-    list-style: none;
-}
+/* === UTILIDADES GLOBALES === */
 
-/* ==================
-   Clases de Utilidad (Botones)
-   ================== */
-.btn {
-    padding: 0.75rem 1.25rem;
-    border: none;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s ease, box-shadow 0.2s ease;
-}
+/* Botones */
+.btn { padding: 0.6rem 1.2rem; border-radius: 4px; border: none; cursor: pointer; font-weight: 600; font-size: 0.9rem; transition: 0.2s; display: inline-flex; align-items: center; justify-content: center;}
+.btn-primary { background: var(--primary-color); color: white; }
+.btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+.btn-secondary { background: white; border: 1px solid #ccc; color: #555; }
+.btn-secondary:hover { background: #f1f1f1; }
+.btn-danger { background: var(--danger-bg); color: var(--danger-text); border: 1px solid #fca5a5; }
 
-.btn-primary {
-    background-color: var(--primary-color);
-    color: white;
+/* Inputs */
+.form-control { 
+    width: 100%; padding: 0.75rem; border: 1px solid #ced4da; border-radius: 6px; 
+    font-size: 1rem; margin-bottom: 1rem; display: block;
 }
-.btn-primary:hover {
-    background-color: #258b7f; /* Un poco más oscuro */
-}
+.form-control:focus { border-color: var(--primary-color); outline: none; box-shadow: 0 0 0 3px rgba(59, 142, 165, 0.15); }
 
-.btn-secondary {
-    background-color: #eeeeee;
-    color: var(--text-primary);
+/* Modales */
+.modal {
+    display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%;
+    background-color: var(--bg-overlay); backdrop-filter: blur(4px);
+    align-items: center; justify-content: center;
 }
-.btn-secondary:hover {
-    background-color: #dddddd;
+.modal.show { display: flex; animation: fadeIn 0.2s ease-out; }
+.modal-content {
+    background-color: #fff; border-top: 5px solid var(--primary-color); padding: 2rem;
+    border-radius: 8px; width: 90%; max-width: 500px; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
 }
+.modal-actions { margin-top: 1.5rem; display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid #eee; padding-top: 1rem; }
 
-/* ... (resto de styles.css) ... */
-
-.btn-dark {
-    background-color: var(--color-dark-gray);
-    color: white;
-  }
-  .btn-dark:hover {
-    background-color: #333; /* Un poco más oscuro al pasar el ratón */
-  }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }

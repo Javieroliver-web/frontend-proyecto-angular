@@ -1,71 +1,42 @@
-:host {
-    /* Hace que el componente <app-sidebar> ocupe el ancho definido */
-    flex-shrink: 0; /* Evita que se encoja */
+.sidebar-container {
     width: var(--sidebar-width);
-}
-
-.sidebar {
-    height: 100%;
-    background: var(--sidebar-bg);
-    border-right: 1px solid var(--border-color);
-    padding: 1.5rem;
+    background-color: #f8f9fa;
+    border-right: 1px solid #ddd;
     display: flex;
     flex-direction: column;
+    height: 100%;
+    flex-shrink: 0;
 }
 
 .sidebar-header {
-    margin-bottom: 2rem;
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #e0e0e0;
+    background: white;
 }
 
-.logo {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--primary-color-dark);
+.logo { height: 40px; }
+
+.sidebar-nav { flex: 1; padding: 1rem 0; }
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centrado si son solo iconos */
+    padding: 1rem;
+    color: #555;
+    transition: all 0.2s;
+    border-left: 4px solid transparent;
 }
 
-.logo img {
-    max-width: 50px; /* Ajusta este ancho a tu gusto */
-    height: auto;
-  }
-
-.sidebar-nav {
-    flex: 1; /* Ocupa el espacio disponible, empujando el footer hacia abajo */
+.nav-link:hover, .nav-link.active {
+    background-color: #e6e6e6;
+    border-left-color: var(--primary-color);
 }
 
-.sidebar-nav h3 {
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    color: var(--text-secondary);
-    margin-top: 1.5rem;
-    margin-bottom: 0.5rem;
-    padding: 0 0.5rem;
-}
+.nav-icon { height: 35px; opacity: 0.7; transition: 0.2s; }
+.nav-link:hover .nav-icon { opacity: 1; transform: scale(1.1); }
 
-.sidebar-nav ul li a {
-    display: block;
-    padding: 0.75rem 0.5rem;
-    border-radius: 6px;
-    font-weight: 500;
-    margin-bottom: 0.25rem;
-    transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.sidebar-nav ul li a:hover {
-    background-color: #f0f0f0;
-}
-
-/* Esta es la clase que Angular añade gracias a routerLinkActive="active" */
-.sidebar-nav ul li a.active {
-    background-color: #e4f4f2; /* Un fondo suave del color primario */
-    color: var(--primary-color);
-    font-weight: 600;
-}
-
-.sidebar-footer {
-    margin-top: 2rem;
-}
-
-.sidebar-footer a {
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-}
+.sidebar-footer { padding: 1rem; text-align: center; border-top: 1px solid #ddd; }
