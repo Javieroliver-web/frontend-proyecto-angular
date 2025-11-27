@@ -1,45 +1,45 @@
-.section-title { font-size: 1.2rem; margin-bottom: 1rem; color: #444; font-weight: 700; }
+.content-area { padding: 2rem; overflow-y: auto; flex: 1; }
+.section-title { font-weight: bold; font-size: 1.2rem; margin-bottom: 1rem; color: #222; }
 
-/* Stats Grid */
-.stats-grid { display: flex; gap: 20px; margin-bottom: 2rem; }
-.stat-card {
-    background: white; flex: 1; padding: 1.5rem;
-    border-radius: 8px; text-align: center;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+/* Stats Boxes */
+.stats-row { display: flex; gap: 20px; margin-bottom: 2rem; }
+.stat-box {
+    background: white; padding: 15px; border-radius: 8px; flex: 1;
+    text-align: center; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
-.stat-value { font-size: 2.5rem; color: var(--primary-color); font-weight: bold; margin-bottom: 5px; }
-.stat-label { color: #777; font-size: 0.9rem; }
+.stat-box h3 { margin: 0; font-size: 2rem; color: var(--primary-color); }
+.stat-box span { color: #666; }
 
-/* Proyectos Grid */
-.projects-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1.5rem; margin-bottom: 2.5rem;
+/* Grid Proyectos */
+.rec-grid { 
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+    gap: 2rem; margin-bottom: 3rem; 
 }
-.project-card {
-    background-color: #3b7c8e; /* Color tarjeta proyecto */
-    color: white; padding: 1.5rem; border-radius: 6px;
-    text-align: center; cursor: pointer;
+.rec-card {
+    background-color: #3b7c8e; color: white; padding: 1.5rem;
+    border-radius: 6px; text-align: center; cursor: pointer;
+    border: 4px solid rgba(255,255,255,0.2);
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     transition: transform 0.2s;
-    border: 4px solid rgba(255,255,255,0.2);
+    min-height: 120px; display: flex; flex-direction: column; 
+    justify-content: center; align-items: center;
 }
-.project-card:hover { transform: translateY(-4px); }
-.project-card h3 { margin: 0 0 10px 0; font-size: 1.1rem; }
-.project-card .date { font-size: 0.8rem; opacity: 0.8; }
+.rec-card:hover { transform: translateY(-4px); }
+.rec-card h3 { margin: 0; font-size: 1.1rem; font-weight: 600; }
+.rec-card span { font-size: 0.8rem; opacity: 0.8; margin-top: 5px; }
 
-/* Task List */
-.tabs-header { border-bottom: 1px solid #ccc; margin-bottom: 1rem; display: flex; }
-.tab.active { padding: 0.5rem 1rem; border-bottom: 3px solid #333; font-weight: bold; }
+/* Lista de Tareas */
+.tabs-header { display: flex; gap: 2rem; border-bottom: 1px solid #999; margin-bottom: 1.5rem; }
+.tab-link { background: none; border: none; font-size: 1.1rem; cursor: pointer; color: #555; padding-bottom: 8px; }
+.tab-link.active { font-weight: 700; color: #000; border-bottom: 3px solid #000; }
 
 .task-list { display: flex; flex-direction: column; gap: 0.5rem; }
 .task-row {
-    background: rgba(255,255,255,0.6); padding: 0.8rem 1rem;
-    border-radius: 6px; border-bottom: 1px solid rgba(0,0,0,0.05);
-    display: flex; justify-content: space-between; align-items: center;
+    display: flex; align-items: center; padding: 0.8rem 1rem;
+    background: rgba(255,255,255,0.5); border-radius: 6px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
 }
-.task-name { font-weight: 500; color: #333; }
-.task-meta { display: flex; align-items: center; gap: 15px; }
-.task-date { font-size: 0.8rem; color: #666; }
-.status-badge { background: #e0f7fa; color: var(--primary-dark); padding: 2px 8px; border-radius: 10px; font-size: 0.8rem; }
-
-.empty-state { text-align: center; color: #888; padding: 1rem; }
+.task-title { flex: 1; font-size: 1rem; font-weight: 500; }
+.task-date { font-size: 0.85rem; color: #666; margin-right: 15px; }
+.badge { background: #eee; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; }
+.empty-text { color: #777; font-style: italic; }

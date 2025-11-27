@@ -1,32 +1,27 @@
 import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './login.html',
   styleUrls: ['./login.css']
 })
 export class LoginComponent {
-  private authService = inject(AuthService);
-  private router = inject(Router);
-  credentials = { email: '', password: '' };
-  errorMessage = '';
-  isLoading = false;
+  authService = inject(AuthService);
+  router = inject(Router);
 
-  onSubmit() {
-    this.isLoading = true;
-    this.errorMessage = '';
-    this.authService.login(this.credentials).subscribe({
+  creds = { email: '', password: '' };
+  errorMsg = '';
+
+  login() {
+    this.authService.login(this.creds).subscribe({
       next: () => this.router.navigate(['/dashboard']),
-      error: () => {
-        this.errorMessage = 'Credenciales inválidas';
-        this.isLoading = false;
-      }
+      error: () => this.errorMsg = 'Credenciales inválidas'
     });
   }
 }

@@ -1,48 +1,51 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
 import { ProjectService } from '../../services/project.service';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.css']
 })
 export class DashboardComponent implements OnInit {
   private projectService = inject(ProjectService);
   private authService = inject(AuthService);
+  private router = inject(Router);
 
+  currentUser: any = null;
   stats: any = {
     tareasPendientes: 0,
     proyectosActivos: 0,
-    notificacionesNoLeidas: 0,
     ultimosProyectos: [],
     tareasProximas: []
   };
-  
-  usuario: any = null;
   isLoading = true;
 
   ngOnInit() {
-    this.usuario = this.authService.getCurrentUser();
-    if (this.usuario) {
-      this.cargarDashboard();
-    }
+    this.authService.currentUser$.subscribe(u => {
+      this.currentUser = u;
+      if (u && u.id) this.cargarDashboard(u.id);
+    });
   }
 
-  cargarDashboard() {
-    this.projectService.getDashboard(this.usuario.id).subscribe({
+  cargarDashboard(userId: number) {
+    this.projectService.getDashboard(userId).subscribe({
       next: (data) => {
         this.stats = data;
         this.isLoading = false;
       },
-      error: (e) => {
-        console.error('Error cargando dashboard', e);
+      error: (err) => {
+        console.error('Error cargando dashboard', err);
         this.isLoading = false;
       }
     });
+  }
+
+  irAProyecto(id: number) {
+    this.router.navigate(['/board'], { queryParams: { id } });
   }
 }

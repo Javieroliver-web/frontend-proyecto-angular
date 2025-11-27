@@ -1,27 +1,16 @@
-<aside class="sidebar-container">
+<aside class="sidebar">
     <div class="sidebar-header">
-        <img src="assets/img/Logo2.png" alt="Sprintix" class="logo">
+        <div class="logo">
+            <img src="/img/Logo2.png" alt="Sprintix" style="height:40px">
+        </div>
     </div>
-    
     <nav class="sidebar-nav">
         <ul>
-            <li>
-                <a routerLink="/dashboard" routerLinkActive="active" class="nav-link">
-                    <img src="assets/icons/homeicon.png" class="nav-icon"> 
-                    </a>
-            </li>
-            <li>
-                <a routerLink="/proyectos" routerLinkActive="active" class="nav-link">
-                    <span style="font-size: 1.2rem;">📂</span> 
-                    <span style="margin-left: 10px;">Proyectos</span>
-                </a>
-            </li>
+            <li><a href="/dashboard.html" class="nav-link"><img src="/img/homeicon.png" alt="logout" style="height:40px"></a></li>
+            <li><a href="/proyectos.html" class="nav-link">Proyectos</a></li>
         </ul>
     </nav>
-
     <div class="sidebar-footer">
-        <a routerLink="/login" class="nav-link logout">
-            <img src="assets/icons/exiticon.png" class="nav-icon">
-        </a>
+        <a href="#" onclick="logout()"><img src="/img/exiticon.png" alt="logout" style="height:40px"></a>
     </div>
 </aside>
