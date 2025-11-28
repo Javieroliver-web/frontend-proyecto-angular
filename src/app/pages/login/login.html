@@ -1,51 +1,49 @@
-<!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Login - Sprintix</title>
-    <link rel="stylesheet" href="/css/styles.css" />
-  </head>
-  <body>
-    <div class="login-page">
-      <div class="login-card">
-        <h2>
-          <img src="assets/img/Logo2.png" alt="Sprintix" style="height: 50px" />
-        </h2>
+<!-- src/app/pages/login/login.html -->
+<div class="login-page">
+  <div class="login-card">
+    
+    <!-- Logo -->
+    <h2>
+      <img src="assets/img/Logo2.png" alt="Sprintix" style="height: 50px;" />
+    </h2>
 
-        <div *ngIf="errorMsg" class="error-msg" style="display: block">
-          <span>{{ errorMsg }}</span>
-        </div>
-
-        <form (ngSubmit)="login()">
-          <div class="form-group">
-            <label>Correo electrónico</label>
-            <input
-              type="email"
-              name="email"
-              [(ngModel)]="creds.email"
-              class="form-input"
-              required
-              placeholder="tu@email.com"
-            />
-          </div>
-          <div class="form-group">
-            <label>Contraseña</label>
-            <input
-              type="password"
-              name="password"
-              [(ngModel)]="creds.password"
-              class="form-input"
-              required
-              placeholder="••••••••"
-            />
-          </div>
-          <button type="submit" class="btn-login">Iniciar sesión</button>
-        </form>
-
-        <div style="margin-top: 2rem; opacity: 0.6">
-          <img src="assets/img/Logo2.png" alt="" style="height: 25px; filter: grayscale(100%)" />
-        </div>
-      </div>
+    <!-- Mensaje de Error -->
+    <div *ngIf="errorMsg" class="error-msg">
+      {{ errorMsg }}
     </div>
-  </body>
-</html>
+
+    <!-- Formulario -->
+    <form (ngSubmit)="login()">
+      <div class="form-group">
+        <label>Correo electrónico</label>
+        <input
+          type="email"
+          name="email"
+          [(ngModel)]="creds.email"
+          class="form-input"
+          placeholder="tu@email.com"
+          required
+        />
+      </div>
+      
+      <div class="form-group">
+        <label>Contraseña</label>
+        <input
+          type="password"
+          name="password"
+          [(ngModel)]="creds.password"
+          class="form-input"
+          placeholder="••••••••"
+          required
+        />
+      </div>
+      
+      <button type="submit" class="btn-login">Iniciar sesión</button>
+    </form>
+
+    <!-- Logo Footer -->
+    <div style="margin-top: 2rem; opacity: 0.6;">
+      <img src="assets/img/Logo2.png" alt="" style="height: 25px; filter: grayscale(100%);" />
+    </div>
+  </div>
+</div>
