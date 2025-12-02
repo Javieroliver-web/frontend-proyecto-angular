@@ -7,17 +7,22 @@ import { BoardComponent } from './pages/board/board';
 import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
+  // Ruta de login sin protección
   { path: 'login', component: LoginComponent },
+  
+  // Rutas protegidas con authGuard
   { 
     path: '', 
     component: MainLayoutComponent,
     canActivate: [authGuard],
     children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent },
       { path: 'proyectos', component: ProjectListComponent },
-      { path: 'board', component: BoardComponent },
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+      { path: 'board', component: BoardComponent }
     ]
   },
+  
+  // Cualquier ruta no definida redirige a login
   { path: '**', redirectTo: 'login' }
 ];

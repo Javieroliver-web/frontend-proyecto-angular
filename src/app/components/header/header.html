@@ -1,29 +1,89 @@
 <!-- src/app/components/header/header.html -->
 <header class="header-container">
-    <div class="search-bar">
-      <!-- Búsqueda oculta por ahora -->
+  <div class="search-bar">
+    <!-- Búsqueda oculta por ahora -->
+  </div>
+  
+  <div class="header-actions">
+
+    <!-- Notificaciones con Dropdown -->
+    <div class="notification-wrapper">
+      <!-- Icono de campana para abrir/cerrar -->
+      <img 
+        src="assets/icons/notificationicon.png" 
+        class="header-icon" 
+        alt="Notificaciones"
+        (click)="toggleDropdown()">
+      
+      <!-- Badge con contador -->
+      <span class="badge-count" *ngIf="notificationCount > 0">
+        {{ notificationCount }}
+      </span>
+
+      <!-- Dropdown de Notificaciones - COMPLETAMENTE CLICKABLE -->
+      <div class="notif-dropdown" [class.show]="dropdownOpen">
+        
+        <!-- Header del dropdown -->
+        <div class="notif-header">
+          <h3>📬 Notificaciones</h3>
+          <button 
+            class="btn-mark-all" 
+            *ngIf="notificaciones.length > 0"
+            (click)="eliminarTodas($event)"
+            type="button"
+            title="Eliminar todas">
+            🗑️
+          </button>
+        </div>
+        
+        <!-- Lista de notificaciones -->
+        <div class="notif-list" *ngIf="notificaciones.length > 0">
+          <div class="notif-item" *ngFor="let notif of notificaciones">
+            
+            <!-- Icono de tipo -->
+            <div class="notif-icon" [ngClass]="{
+              'icon-info': notif.tipo === 'info',
+              'icon-success': notif.tipo === 'exito',
+              'icon-alert': notif.tipo === 'alerta'
+            }">
+              <span *ngIf="notif.tipo === 'info'">ℹ️</span>
+              <span *ngIf="notif.tipo === 'exito'">✅</span>
+              <span *ngIf="notif.tipo === 'alerta'">⚠️</span>
+            </div>
+            
+            <!-- Contenido -->
+            <div class="notif-content">
+              <p class="notif-message">{{ notif.mensaje }}</p>
+              <small class="notif-time">{{ notif.fecha | date: 'short' }}</small>
+            </div>
+            
+            <!-- Botón eliminar individual -->
+            <button 
+              class="btn-close-notif" 
+              (click)="eliminarNotificacion(notif, $event)"
+              type="button"
+              title="Eliminar">
+              ×
+            </button>
+          </div>
+        </div>
+        
+        <!-- Estado vacío -->
+        <div class="notif-empty" *ngIf="notificaciones.length === 0">
+          <p>🎉 No hay notificaciones nuevas</p>
+        </div>
+        
+      </div>
+    </div>
+
+    <!-- Avatar Usuario -->
+    <div class="user-profile">
+      <div class="avatar">{{ getInitials() }}</div>
     </div>
     
-    <div class="header-actions">
-      <!-- Botón Crear Proyecto -->
-      <button class="btn btn-primary" routerLink="/proyectos" style="margin-right: 15px;">
-        + Crear Proyecto
-      </button>
-  
-      <!-- Notificaciones (Placeholder por ahora) -->
-      <div class="icon-wrapper">
-        <img src="assets/icons/notificationicon.png" class="header-icon" alt="Notificaciones">
-        <span class="badge" *ngIf="notificationCount > 0">{{ notificationCount }}</span>
-      </div>
-  
-      <!-- Avatar Usuario -->
-      <div class="user-profile">
-        <div class="avatar">{{ getInitials() }}</div>
-      </div>
-      
-      <!-- Botón Logout -->
-      <a (click)="logout()" class="logout-btn" title="Cerrar sesión">
-        <img src="assets/icons/exiticon.png" style="height: 24px;" alt="Salir">
-      </a>
-    </div>
-  </header>
+    <!-- Botón Logout -->
+    <a (click)="logout()" class="logout-btn" title="Cerrar sesión">
+      <img src="assets/icons/exiticon.png" style="height: 24px;" alt="Salir">
+    </a>
+  </div>
+</header>

@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable, tap, BehaviorSubject } from 'rxjs';
+import { Observable, tap, BehaviorSubject, catchError, of } from 'rxjs';
 import { environment } from '../../enviroment/enviroment.development';
 
 export interface Usuario {
@@ -25,15 +25,29 @@ export class AuthService {
   public currentUser$ = this.currentUserSubject.asObservable();
 
   constructor() {
+    // Verificar si hay un usuario guardado al iniciar
+    this.loadUserFromStorage();
+  }
+
+  private loadUserFromStorage(): void {
+    const token = localStorage.getItem('token');
     const userStr = localStorage.getItem('user');
-    if (userStr) {
+    
+    if (token && userStr) {
       try {
-        this.currentUserSubject.next(JSON.parse(userStr));
+        const user = JSON.parse(userStr);
+        this.currentUserSubject.next(user);
       } catch (e) {
         console.error('Error parsing user', e);
-        this.logout();
+        this.clearStorage();
       }
     }
+  }
+
+  private clearStorage(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    this.currentUserSubject.next(null);
   }
 
   login(credentials: any): Observable<any> {
@@ -46,22 +60,25 @@ export class AuthService {
             this.currentUserSubject.next(response.usuario);
           }
         }
+      }),
+      catchError(error => {
+        console.error('Login error:', error);
+        throw error;
       })
     );
   }
 
   logout(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    this.currentUserSubject.next(null);
+    this.clearStorage();
     this.router.navigate(['/login']);
   }
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
+    const token = localStorage.getItem('token');
+    return !!token;
   }
 
-  isAuthenticated(): boolean { // Alias para compatibilidad
+  isAuthenticated(): boolean {
     return this.isLoggedIn();
   }
 

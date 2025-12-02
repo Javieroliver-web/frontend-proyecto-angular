@@ -2,198 +2,194 @@
 
 <!-- Loading State -->
 <div *ngIf="!proyecto.id" class="loading-container">
-    <div class="spinner"></div>
-    <p>Cargando tablero...</p>
-  </div>
+  <div class="spinner"></div>
+  <p>Cargando tablero...</p>
+</div>
+
+<!-- Tablero Kanban -->
+<div *ngIf="proyecto.id" class="board-page">
   
-  <!-- Tablero Kanban -->
-  <div *ngIf="proyecto.id" class="board-page">
+  <!-- Header del Proyecto -->
+  <div class="project-header">
+    <div class="project-title">
+      <h2>{{ proyecto.nombre }}</h2>
+    </div>
+  </div>
+
+  <!-- Tablero de 3 Columnas -->
+  <div class="board-container">
     
-    <!-- Header del Proyecto -->
-    <div class="project-header">
-      <div class="project-title">
-        <div class="project-icon">📋</div>
-        <h2>{{ proyecto.nombre }}</h2>
+    <!-- COLUMNA 1: Por hacer -->
+    <div class="board-column" 
+         (dragover)="onDragOver($event)" 
+         (drop)="onDrop($event, 'pendiente')">
+      
+      <div class="column-header">
+        <h3>📋 Por hacer</h3>
+        <span class="task-count">{{ columnas.pendiente.length }}</span>
+        <button class="btn-add-task" (click)="abrirModalCrear('pendiente')" title="Agregar tarea">+</button>
       </div>
-      <button class="btn btn-secondary" routerLink="/proyectos">
-        ← Volver
+      
+      <div class="column-content">
+        <div class="task-card" 
+             *ngFor="let tarea of columnas.pendiente"
+             draggable="true" 
+             (dragstart)="onDragStart($event, tarea)"
+             (click)="abrirModalVer(tarea)">
+          <h4>{{ tarea.titulo }}</h4>
+          <p *ngIf="tarea.descripcion">{{ tarea.descripcion }}</p>
+          <div class="card-footer" *ngIf="tarea.fecha_limite">
+            <small class="task-date">📅 {{ tarea.fecha_limite }}</small>
+          </div>
+        </div>
+        
+        <p *ngIf="columnas.pendiente.length === 0" class="empty-state">
+          No hay tareas pendientes
+        </p>
+      </div>
+    </div>
+
+    <!-- COLUMNA 2: En curso -->
+    <div class="board-column" 
+         (dragover)="onDragOver($event)" 
+         (drop)="onDrop($event, 'en_progreso')">
+      
+      <div class="column-header">
+        <h3>⚙️ En curso</h3>
+        <span class="task-count">{{ columnas.en_progreso.length }}</span>
+        <button class="btn-add-task" (click)="abrirModalCrear('en_progreso')" title="Agregar tarea">+</button>
+      </div>
+      
+      <div class="column-content">
+        <div class="task-card" 
+             *ngFor="let tarea of columnas.en_progreso"
+             draggable="true" 
+             (dragstart)="onDragStart($event, tarea)"
+             (click)="abrirModalVer(tarea)">
+          <h4>{{ tarea.titulo }}</h4>
+          <p *ngIf="tarea.descripcion">{{ tarea.descripcion }}</p>
+          <div class="card-footer" *ngIf="tarea.fecha_limite">
+            <small class="task-date">📅 {{ tarea.fecha_limite }}</small>
+          </div>
+        </div>
+        
+        <p *ngIf="columnas.en_progreso.length === 0" class="empty-state">
+          No hay tareas en curso
+        </p>
+      </div>
+    </div>
+
+    <!-- COLUMNA 3: Completadas -->
+    <div class="board-column" 
+         (dragover)="onDragOver($event)" 
+         (drop)="onDrop($event, 'completada')">
+      
+      <div class="column-header">
+        <h3>✅ Listo</h3>
+        <span class="task-count">{{ columnas.completada.length }}</span>
+      </div>
+      
+      <div class="column-content">
+        <div class="task-card completed" 
+             *ngFor="let tarea of columnas.completada"
+             draggable="true" 
+             (dragstart)="onDragStart($event, tarea)"
+             (click)="abrirModalVer(tarea)">
+          <h4>{{ tarea.titulo }}</h4>
+          <p *ngIf="tarea.descripcion">{{ tarea.descripcion }}</p>
+          <div class="card-footer" *ngIf="tarea.fecha_limite">
+            <small class="task-date">📅 {{ tarea.fecha_limite }}</small>
+          </div>
+        </div>
+        
+        <p *ngIf="columnas.completada.length === 0" class="empty-state">
+          No hay tareas completadas
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE VER TAREA (Solo Lectura) -->
+<div class="modal-overlay" *ngIf="modalViewOpen" (click)="cerrarModales()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>{{ selectedTarea?.titulo }}</h3>
+      <button class="btn-close" (click)="cerrarModales()">×</button>
+    </div>
+    
+    <div style="padding: 1.5rem;">
+      <p style="color:#666; margin-bottom: 10px;">
+        <strong>Estado:</strong> {{ selectedTarea?.estado }}
+      </p>
+      <p style="color:#666; margin-bottom: 15px;" *ngIf="selectedTarea?.fecha_limite">
+        <strong>Fecha límite:</strong> {{ selectedTarea.fecha_limite }}
+      </p>
+      <div style="background: #f9fafb; padding: 15px; border-radius: 6px; border: 1px solid #e5e7eb;">
+        <p style="white-space: pre-wrap; margin: 0; line-height: 1.6;">
+          {{ selectedTarea?.descripcion || 'Sin descripción' }}
+        </p>
+      </div>
+    </div>
+    
+    <div class="modal-actions">
+      <button type="button" class="btn btn-danger" (click)="eliminarTarea(selectedTarea.id)">
+        🗑️ Eliminar
+      </button>
+      <button type="button" class="btn btn-primary" (click)="abrirModalEditarDesdeVer()">
+        ✏️ Editar
       </button>
     </div>
-  
-    <!-- Tablero de 3 Columnas -->
-    <div class="board-container">
-      
-      <!-- COLUMNA 1: Pendientes -->
-      <div class="board-column" 
-           (dragover)="onDragOver($event)" 
-           (drop)="onDrop($event, 'pendiente')">
-        
-        <div class="column-header">
-          <h3>📋 Por hacer</h3>
-          <span class="task-count">{{ columnas.pendiente.length }}</span>
-          <button class="btn-add-task" (click)="abrirModalCrear('pendiente')">+</button>
-        </div>
-        
-        <div class="column-content">
-          <div class="task-card" 
-               *ngFor="let tarea of columnas.pendiente"
-               draggable="true" 
-               (dragstart)="onDragStart($event, tarea)"
-               (click)="abrirModalVer(tarea)">
-            <h4>{{ tarea.titulo }}</h4>
-            <p *ngIf="tarea.descripcion">{{ tarea.descripcion }}</p>
-            <div class="card-footer" *ngIf="tarea.fecha_limite">
-              <small class="task-date">📅 {{ tarea.fecha_limite }}</small>
-            </div>
-          </div>
-          
-          <p *ngIf="columnas.pendiente.length === 0" class="empty-state">
-            No hay tareas pendientes
-          </p>
-        </div>
-      </div>
-  
-      <!-- COLUMNA 2: En Progreso -->
-      <div class="board-column" 
-           (dragover)="onDragOver($event)" 
-           (drop)="onDrop($event, 'en_progreso')">
-        
-        <div class="column-header">
-          <h3>⚙️ En curso</h3>
-          <span class="task-count">{{ columnas.en_progreso.length }}</span>
-          <button class="btn-add-task" (click)="abrirModalCrear('en_progreso')">+</button>
-        </div>
-        
-        <div class="column-content">
-          <div class="task-card" 
-               *ngFor="let tarea of columnas.en_progreso"
-               draggable="true" 
-               (dragstart)="onDragStart($event, tarea)"
-               (click)="abrirModalVer(tarea)">
-            <h4>{{ tarea.titulo }}</h4>
-            <p *ngIf="tarea.descripcion">{{ tarea.descripcion }}</p>
-            <div class="card-footer" *ngIf="tarea.fecha_limite">
-              <small class="task-date">📅 {{ tarea.fecha_limite }}</small>
-            </div>
-          </div>
-          
-          <p *ngIf="columnas.en_progreso.length === 0" class="empty-state">
-            No hay tareas en curso
-          </p>
-        </div>
-      </div>
-  
-      <!-- COLUMNA 3: Completadas -->
-      <div class="board-column" 
-           (dragover)="onDragOver($event)" 
-           (drop)="onDrop($event, 'completada')">
-        
-        <div class="column-header">
-          <h3>✅ Completadas</h3>
-          <span class="task-count">{{ columnas.completada.length }}</span>
-        </div>
-        
-        <div class="column-content">
-          <div class="task-card completed" 
-               *ngFor="let tarea of columnas.completada"
-               draggable="true" 
-               (dragstart)="onDragStart($event, tarea)"
-               (click)="abrirModalVer(tarea)">
-            <h4>{{ tarea.titulo }}</h4>
-            <p *ngIf="tarea.descripcion">{{ tarea.descripcion }}</p>
-            <div class="card-footer" *ngIf="tarea.fecha_limite">
-              <small class="task-date">📅 {{ tarea.fecha_limite }}</small>
-            </div>
-          </div>
-          
-          <p *ngIf="columnas.completada.length === 0" class="empty-state">
-            No hay tareas completadas
-          </p>
-        </div>
-      </div>
-    </div>
   </div>
-  
-  <!-- MODAL DE VER TAREA (Solo Lectura) -->
-  <div class="modal-overlay" *ngIf="modalViewOpen" (click)="cerrarModales()">
-    <div class="modal-content" (click)="$event.stopPropagation()">
-      <div class="modal-header">
-        <h3>{{ selectedTarea?.titulo }}</h3>
-        <button class="btn-close" (click)="cerrarModales()">×</button>
+</div>
+
+<!-- MODAL DE CREAR/EDITAR TAREA -->
+<div class="modal-overlay" *ngIf="modalEditOpen" (click)="cerrarModales()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>{{ isEditMode ? '✏️ Editar Tarea' : '✨ Nueva Tarea' }}</h3>
+      <button class="btn-close" (click)="cerrarModales()">×</button>
+    </div>
+    
+    <form (ngSubmit)="guardarTarea()">
+      <div class="form-group">
+        <label>Título *</label>
+        <input 
+          type="text" 
+          [(ngModel)]="currentTarea.titulo" 
+          name="titulo"
+          class="form-control" 
+          placeholder="Ej: Diseñar mockups"
+          required>
       </div>
-      
-      <div style="padding: 1.5rem;">
-        <p style="color:#666; margin-bottom: 10px;">
-          <strong>Estado:</strong> {{ selectedTarea?.estado }}
-        </p>
-        <p style="color:#666; margin-bottom: 15px;" *ngIf="selectedTarea?.fecha_limite">
-          <strong>Fecha:</strong> {{ selectedTarea.fecha_limite }}
-        </p>
-        <div style="background: #f9f9f9; padding: 15px; border-radius: 6px; border: 1px solid #eee;">
-          <p style="white-space: pre-wrap; margin: 0;">
-            {{ selectedTarea?.descripcion || 'Sin descripción' }}
-          </p>
-        </div>
+
+      <div class="form-group">
+        <label>Descripción</label>
+        <textarea 
+          [(ngModel)]="currentTarea.descripcion" 
+          name="descripcion"
+          class="form-control" 
+          rows="4"
+          placeholder="Detalles de la tarea..."></textarea>
       </div>
-      
+
+      <div class="form-group">
+        <label>Fecha Límite</label>
+        <input 
+          type="date" 
+          [(ngModel)]="currentTarea.fecha_limite" 
+          name="fecha"
+          class="form-control">
+      </div>
+
       <div class="modal-actions">
-        <button type="button" class="btn btn-danger" (click)="eliminarTarea(selectedTarea.id)">
-          🗑️ Eliminar
+        <button type="button" class="btn btn-secondary" (click)="cerrarModales()">
+          Cancelar
         </button>
-        <button type="button" class="btn btn-primary" (click)="abrirModalEditarDesdeVer()">
-          ✏️ Editar
+        <button type="submit" class="btn btn-primary">
+          {{ isEditMode ? 'Guardar Cambios' : 'Crear Tarea' }}
         </button>
       </div>
-    </div>
+    </form>
   </div>
-  
-  <!-- MODAL DE CREAR/EDITAR TAREA -->
-  <div class="modal-overlay" *ngIf="modalEditOpen" (click)="cerrarModales()">
-    <div class="modal-content" (click)="$event.stopPropagation()">
-      <div class="modal-header">
-        <h3>{{ isEditMode ? '✏️ Editar Tarea' : '✨ Nueva Tarea' }}</h3>
-        <button class="btn-close" (click)="cerrarModales()">×</button>
-      </div>
-      
-      <form (ngSubmit)="guardarTarea()">
-        <div class="form-group">
-          <label>Título *</label>
-          <input 
-            type="text" 
-            [(ngModel)]="currentTarea.titulo" 
-            name="titulo"
-            class="form-control" 
-            placeholder="Ej: Diseñar mockups"
-            required>
-        </div>
-  
-        <div class="form-group">
-          <label>Descripción</label>
-          <textarea 
-            [(ngModel)]="currentTarea.descripcion" 
-            name="descripcion"
-            class="form-control" 
-            rows="3"
-            placeholder="Detalles de la tarea..."></textarea>
-        </div>
-  
-        <div class="form-group">
-          <label>Fecha Límite</label>
-          <input 
-            type="date" 
-            [(ngModel)]="currentTarea.fecha_limite" 
-            name="fecha"
-            class="form-control">
-        </div>
-  
-        <div class="modal-actions">
-          <button type="button" class="btn btn-secondary" (click)="cerrarModales()">
-            Cancelar
-          </button>
-          <button type="submit" class="btn btn-primary">
-            {{ isEditMode ? 'Guardar Cambios' : 'Crear Tarea' }}
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
+</div>
